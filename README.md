@@ -1,16 +1,16 @@
-# ProductCatalog
-App Exercise
-
+# README #
 What're included?
 
-## Design doc
+## Design doc ##
 
 * Describe the components and interactions
 
-## Testcases 
+## Testcases ##
 
 * Plan to test various components and functions
 
-## Source code 
+## Source code ##
 
 * Launch XCode to run in simulators
+
+
