@@ -26,7 +26,6 @@ protocol CatalogListVMProvider {
 }
 
 class CatalogListVM: CatalogListVMProvider {
-    
     let pageSize: Int
     
     var productId_prefix: String = ""
@@ -44,7 +43,7 @@ class CatalogListVM: CatalogListVMProvider {
     }
  
     func load(_ str: String, _ size: Int = 20) {
-        self.productId_prefix = str
+        productId_prefix = str
         DispatchQueue.global().async {
             let (products, total) = self.dataService.getProducts(with: self.productId_prefix, from: 0, size)
             DispatchQueue.main.async {
@@ -57,13 +56,13 @@ class CatalogListVM: CatalogListVMProvider {
     func loadMore(_ n: Int = 20) {
         DispatchQueue.global().async {
             let ct = self.products.count
-            let (results, _) = self.dataService.getProducts(with: self.productId_prefix, from: ct+1, n)
+            let (results, _) = self.dataService.getProducts(with: self.productId_prefix, from: ct + 1, n)
             DispatchQueue.main.async {
                 let range: ClosedRange<Int>? = results.count == 0 ? nil : (self.products.count ... (self.products.count + results.count - 1))
                 self.products += results
                 self.onRowsAdded?(range)
             }
-        }        
+        }
     }
     
     func numberOfProducts() -> Int {

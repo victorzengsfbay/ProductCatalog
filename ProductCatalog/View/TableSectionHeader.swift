@@ -25,7 +25,7 @@ class TableSectionHeader: UIView {
                                      stx.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -Constants.ProductCataView.productCellInsets.right),
                                      stx.topAnchor.constraint(equalTo: self.topAnchor, constant: 0)])
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

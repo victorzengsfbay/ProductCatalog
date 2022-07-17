@@ -7,13 +7,12 @@
 import UIKit
 
 class ProductTableViewCell: UITableViewCell {
-    let productIdLabel  = UILabel()
-    let productInfoLabel  = UILabel()
+    let productIdLabel = UILabel()
+    let productInfoLabel = UILabel()
     let priceLabel = UILabel()
     let colorSizeLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         let stx = UIStackView(arrangedSubviews: [productIdLabel, priceLabel])
         stx.axis = .horizontal
@@ -37,7 +36,6 @@ class ProductTableViewCell: UITableViewCell {
         self.productIdLabel.font = Constants.ProductCataView.productIdFont
         self.priceLabel.font = Constants.ProductCataView.productPriceFont
         self.colorSizeLabel.font = Constants.ProductCataView.productInfoFont
-        
     }
     
     required init?(coder: NSCoder) {

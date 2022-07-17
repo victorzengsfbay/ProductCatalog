@@ -11,28 +11,20 @@ protocol CSVReaderProtocol {
     var keys: String {get}
     func getNextLine() -> String?
 }
-//https://drive.google.com/uc?export=download&id=16jxfVYEM04175AMneRlT0EKtaDhhdrrv
-class CSVFileReader: CSVReaderProtocol {    
+
+struct CSVFileReader: CSVReaderProtocol {    
     let path: String
     let totalRecord: Int
     let keys: String
-    var dataLines: [String]
     var currentIndex: Int = 0
+    var reader: StreamReader?
     
     init?(_ filePath: String) {
         self.path = filePath
-        if let data = try?  String(contentsOfFile: filePath) {
-            var lines = data.components(separatedBy: .newlines).map {String($0)}
-            if lines.count == 0 {
-                return nil
-            }
-            self.keys = lines[0]
-            lines.remove(at: 0)
-            if let last = lines.last, last.count < 10 {
-                lines.removeLast()
-            }
-            dataLines = lines
-            totalRecord = dataLines.count
+        if let reader = StreamReader(url: URL(fileURLWithPath: filePath)) {
+            self.reader = reader
+            totalRecord = (self.reader?.numberOfNoEmptylines(10) ?? 1) - 1
+            self.keys = self.reader?.nextLine() ?? ""
         }
         else {
             return nil
@@ -40,12 +32,7 @@ class CSVFileReader: CSVReaderProtocol {
     }
     
     func getNextLine() -> String? {
-        if currentIndex < dataLines.count {
-            let line = dataLines[currentIndex]
-            currentIndex += 1
-            return line
-        }
-        return nil
+        self.reader?.nextLine()
     }
      
 }
@@ -96,5 +83,14 @@ class CSVFileReader: CSVReaderProtocol {
                      buffer.append(tempData)
                  }
              } while true
+         }
+         func numberOfNoEmptylines(_ minLen: Int) -> Int {
+             self.rewind()
+             var ct = 0
+             while let line = nextLine(), line.count >= minLen {
+                 ct += 1
+             }
+             self.rewind()
+             return ct
          }
      }

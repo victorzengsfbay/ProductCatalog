@@ -12,7 +12,6 @@ class ActivityProgressView: UIStackView {
     weak var messageLabel: UILabel!
     
     static func createProgressView(in superView: UIView, _ titleText: String? = nil) -> ActivityProgressView {
-        
         let titleLabel = UILabel()
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: 15.0, weight: UIFont.Weight.bold)

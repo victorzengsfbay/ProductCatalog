@@ -8,7 +8,7 @@ import Foundation
 
 protocol CSVDownloadWatcher: AnyObject {
     func finishDownloading(_ status: Bool)
-    func downloadProgress(_ progress: Float, _ bytes: Int, _ total: Int) 
+    func downloadProgress(_ progress: Float, _ bytes: Int, _ total: Int)
     func csvFileWillStartDownload()
 }
 
@@ -18,13 +18,13 @@ class CSVDownloadManager: NSObject {
     var tasks: [URLSessionTask] = []
     var targetURL: URL?
     weak var delegate: CSVDownloadWatcher?
-    
+
     override private init() {
         super.init()
 
         let config = URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
-        urlSession = URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
-        urlSession.getAllTasks { tasks in
+        self.urlSession = URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
+        self.urlSession.getAllTasks { tasks in
             DispatchQueue.main.async {
                 self.tasks = tasks
             }
@@ -33,23 +33,28 @@ class CSVDownloadManager: NSObject {
 
     func startDownload(source url: URL, target fileURL: URL, watcher: CSVDownloadWatcher?) -> URLSessionDownloadTask {
         self.delegate = watcher
-        
-        let task = urlSession.downloadTask(with: url)
+
+        let task = self.urlSession.downloadTask(with: url)
         self.targetURL = fileURL
         task.resume()
         self.tasks.append(task)
         self.delegate?.csvFileWillStartDownload()
-        
+
         return task
     }
 
     private func cleanup(_ task: URLSessionTask) {
         for (i, t) in self.tasks.enumerated() {
             if t === task {
+                t.cancel()
                 self.tasks.remove(at: i)
                 break
             }
         }
+    }
+
+    static func defaultLocalFileURL() -> URL? {
+        return try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(Constants.CSVFile.productCatalogFilePath)
     }
 }
 
@@ -75,8 +80,7 @@ extension CSVDownloadManager: URLSessionDelegate, URLSessionDownloadDelegate {
             } catch {
                 self.delegate?.finishDownloading(false)
             }
-        }
-        else {
+        } else {
             self.delegate?.finishDownloading(false)
         }
         self.cleanup(downloadTask)
