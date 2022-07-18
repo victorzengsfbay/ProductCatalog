@@ -1,6 +1,6 @@
 # README #
 What're included?
-Note: requires iOS 15.x. Use Swift concurrency capability to coordinate read file & write database, while "actor" of FIFO queue for data exchange.
+Note: requires iOS 15.x. Use Swift concurrency capability to coordinate read file & write database, with an "actor" of FIFO queue for data exchange.
 
 ## Design doc ##
 
