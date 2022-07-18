@@ -18,17 +18,37 @@ class DatabaseImporter: SqliteWriteObserver {
     var localCSVFileURL: URL?
     var sqlService: SqliteService?
     
-    func setupImporter(source: URL? = nil) {
-        if let localCSVFileURL = source ?? localCSVFileURL ?? CSVDownloadManager.defaultLocalFileURL(),
-           let csvFileReader = CSVFileReader(localCSVFileURL.path)
-        {
-            let sqlw = SqliteService()
-            sqlw.delegate = self
-            sqlw.reader = csvFileReader
-            self.databuilderObserver?.databaseWillStartImport()
-            _ = sqlw.startImport()
-            self.sqlService = sqlw
+    @Published var status: DatabaseImporter.Status?
+    
+    /*
+     * Based on local source CSVFile, create default database if needed, create a new table
+     * for the product catalog to import
+     * Start populating all data entries
+     */
+    func configureAndStartImport(source: URL? = nil) {
+        
+        guard let localCSVFileURL = source ?? localCSVFileURL ?? CSVDownloadManager.defaultLocalFileURL(),
+           let csvFileReader = CSVFileReader(localCSVFileURL.path) else {
+            self.status = .cannotStartImport
+            return
         }
+        let sqlw = SqliteService()
+        
+        if  sqlw.startImport() {
+            sqlw.delegate = self
+            
+            self.databuilderObserver?.databaseWillStartImport()
+            self.status = .importStarted
+            
+            sqlw.pouplateAllData(csvFileReader)
+            
+            self.sqlService = sqlw
+            self.status = .importStarted
+        }
+        else {
+            self.status = .cannotStartImport
+        }
+        
     }
     
     func prepareDatabase(_ url: URL? = nil,
@@ -39,7 +59,7 @@ class DatabaseImporter: SqliteWriteObserver {
         self.downloadWatcher = downloadWatcher
         
         if DatabaseImporter.isCSVFileReady() {
-            self.setupImporter()
+            self.configureAndStartImport()
         }
         else {
             if let source = url ?? URL(string: Constants.CSVFile.productCatalogURLPath),
@@ -49,6 +69,10 @@ class DatabaseImporter: SqliteWriteObserver {
                 _ = CSVDownloadManager.shared.startDownload(source: source,
                                                             target: targetURL,
                                                             watcher: self)
+                self.status = .downloadStarted
+            }
+            else {
+                self.status = .cannotStartDownload
             }
         }
     }
@@ -106,8 +130,17 @@ extension DatabaseImporter: CSVDownloadWatcher {
             self.downloadWatcher?.finishDownloading(status)
             if status {
                 // launch database builder
-                self.setupImporter()
+                self.configureAndStartImport()
             }
         }
+    }
+}
+
+extension DatabaseImporter {
+    enum Status {
+        case cannotStartDownload
+        case downloadStarted
+        case cannotStartImport
+        case importStarted
     }
 }

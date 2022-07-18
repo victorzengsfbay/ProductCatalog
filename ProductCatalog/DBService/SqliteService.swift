@@ -22,7 +22,8 @@ protocol SqliteReaderProvider {
 }
 
 protocol SqliteWriteProvider {
-    func startImport() -> Bool
+    func startImport(_ csvReader: CSVReaderProtocol?) -> Bool
+    func pouplateAllData(_ csvReader: CSVReaderProtocol)
     func cancel()
 }
 
@@ -83,67 +84,66 @@ extension SqliteService {
         // _ = isCancelled.testAndSet(value: true)
     }
     
-    func startImport() -> Bool {
+    func startImport(_ csvReader: CSVReaderProtocol? = nil) -> Bool {
+        var status: Bool = true
         self.queue.sync {
-            if let _ = self.createDefaultDatabase() {
+            if  self.createDefaultDatabase() != nil {
                 _ = self.dropTable()
-                queue.async {
-                    self.pouplateAllData()
-                }
+                status = self.createTable()
+            }
+            else {
+                status = false
             }
         }
-        return self.database != nil
+        return status
     }
     
-    func pouplateAllData() {
-        
-        guard self.createTable() == true, let csvReader = self.reader else {
-            return self.notifyStatus(false)
-        }
-        typealias Products = [Product]
-        let dataQueue = DataQueue<Products>()
-        
-        //reading task
-        Task {
-            repeat {
-                let products = csvReader.getNextProducts(self.batchSize)
-                if products.count > 0 {
-                    await dataQueue.enqueue(key: products)
-                }
-                else {
-                    await dataQueue.notifyDoneReading()
-                    break
-                }
-            } while true
-        }
-        
-        //writing task
-        Task {
-            var status: Bool = true
-            repeat {
-                let done = await dataQueue.isReadingDone()
-                let empty = await dataQueue.isEmpty
-                if !done || !empty {
-                    if let products = await dataQueue.dequeue(), products.count > 0 {
-                        status  = self.insertProducts(products)
-                        if status {
-                            self.current += products.count
-                            if self.current % 2000 == 0 {
-                                self.notifyProgress(at: self.current, of: csvReader.totalRecord)
+    func pouplateAllData(_ csvReader: CSVReaderProtocol) {
+        self.queue.async {
+            typealias Products = [Product]
+            let dataQueue = DataQueue<Products>()
+            
+            //reading task
+            Task {
+                repeat {
+                    let products = csvReader.getNextProducts(self.batchSize)
+                    if products.count > 0 {
+                        await dataQueue.enqueue(key: products)
+                    }
+                    else {
+                        await dataQueue.notifyDoneReading()
+                        break
+                    }
+                } while true
+            }
+            
+            //writing task
+            Task {
+                var status: Bool = true
+                repeat {
+                    let done = await dataQueue.isReadingDone()
+                    let empty = await dataQueue.isEmpty
+                    if !done || !empty {
+                        if let products = await dataQueue.dequeue(), products.count > 0 {
+                            status  = self.insertProducts(products)
+                            if status {
+                                self.current += products.count
+                                if self.current % 2000 == 0 {
+                                    self.notifyProgress(at: self.current, of: csvReader.totalRecord)
+                                }
+                            }
+                            else {
+                                break
                             }
                         }
-                        else {
-                            break
-                        }
                     }
-                }
-                else {
-                    break
-                }
-            } while true
-            self.notifyStatus(status)
+                    else {
+                        break
+                    }
+                } while true
+                self.notifyStatus(status)
+            }
         }
-        
     }
     
     func notifyProgress(at position: Int, of total: Int) {
