@@ -10,6 +10,7 @@ protocol CSVReaderProtocol {
     var totalRecord: Int {get}
     var keys: String {get}
     func getNextLine() -> String?
+    func getNextProducts(_ n: Int) -> [Product]
 }
 
 struct CSVFileReader: CSVReaderProtocol {    
@@ -34,7 +35,19 @@ struct CSVFileReader: CSVReaderProtocol {
     func getNextLine() -> String? {
         self.reader?.nextLine()
     }
-     
+    
+    func getNextProducts(_ n: Int = 100) -> [Product] {
+        var products = [Product]()
+        while products.count < n {
+            if let line = reader?.nextLine(), let product = Product(line) {
+                products.append(product)
+            }
+            else {
+                break
+            }
+        }
+        return products
+    }
 }
 
      class StreamReader {

@@ -31,6 +31,7 @@
 		FCD2607D28822166004D709F /* ActivityProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD2607C28822166004D709F /* ActivityProgressView.swift */; };
 		FCD260812882BCC4004D709F /* Testcases.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FCD260802882BCC4004D709F /* Testcases.pdf */; };
 		FCD2608328830A87004D709F /* Designdoc.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FCD2608228830A87004D709F /* Designdoc.pdf */; };
+		FCDBE6792884CD5A00652549 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDBE6782884CD5A00652549 /* Queue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		FCD2607C28822166004D709F /* ActivityProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityProgressView.swift; sourceTree = "<group>"; };
 		FCD260802882BCC4004D709F /* Testcases.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Testcases.pdf; sourceTree = "<group>"; };
 		FCD2608228830A87004D709F /* Designdoc.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Designdoc.pdf; sourceTree = "<group>"; };
+		FCDBE6782884CD5A00652549 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 			children = (
 				FC66BF80287D350400E3FE29 /* Constants.swift */,
 				FCBFC8B62881E35C00E055CE /* String+Quote.swift */,
+				FCDBE6782884CD5A00652549 /* Queue.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				FC66BF8B287DDC3800E3FE29 /* CatalogListVM.swift in Sources */,
 				FC66BF7B287D285000E3FE29 /* Product.swift in Sources */,
 				FC66BF49287D251700E3FE29 /* AppDelegate.swift in Sources */,
+				FCDBE6792884CD5A00652549 /* Queue.swift in Sources */,
 				FC66BF8E287E13E600E3FE29 /* ProductTableViewCell.swift in Sources */,
 				FC66BF4B287D251700E3FE29 /* SceneDelegate.swift in Sources */,
 				FC66BF88287DCF3200E3FE29 /* CSVDownloadManager.swift in Sources */,
@@ -563,7 +567,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -584,7 +588,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M853W6R7P2;
+				DEVELOPMENT_TEAM = GV8H468K3M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ProductCatalog/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -592,7 +596,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

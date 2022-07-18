@@ -96,33 +96,54 @@ extension SqliteService {
     }
     
     func pouplateAllData() {
+        
         guard self.createTable() == true, let csvReader = self.reader else {
             return self.notifyStatus(false)
         }
+        typealias Products = [Product]
+        let dataQueue = DataQueue<Products>()
         
-        var lines: [Product] = []
-        var status = true
+        //reading task
+        Task {
+            repeat {
+                let products = csvReader.getNextProducts(self.batchSize)
+                if products.count > 0 {
+                    await dataQueue.enqueue(key: products)
+                }
+                else {
+                    await dataQueue.notifyDoneReading()
+                    break
+                }
+            } while true
+        }
         
-        let blockInsert = {
-            status = self.insertProducts(lines)
-            self.current += lines.count
-            lines = []
-            if self.current % 2000 == 0 {
-                self.notifyProgress(at: self.current, of: csvReader.totalRecord)
-            }
+        //writing task
+        Task {
+            var status: Bool = true
+            repeat {
+                let done = await dataQueue.isReadingDone()
+                let empty = await dataQueue.isEmpty
+                if !done || !empty {
+                    if let products = await dataQueue.dequeue(), products.count > 0 {
+                        status  = self.insertProducts(products)
+                        if status {
+                            self.current += products.count
+                            if self.current % 2000 == 0 {
+                                self.notifyProgress(at: self.current, of: csvReader.totalRecord)
+                            }
+                        }
+                        else {
+                            break
+                        }
+                    }
+                }
+                else {
+                    break
+                }
+            } while true
+            self.notifyStatus(status)
         }
-        while let nextLine = csvReader.getNextLine(),
-              let product = Product(nextLine)
-        {
-            lines.append(product)
-            if lines.count >= self.batchSize {
-                blockInsert()
-            }
-        }
-        if lines.count > 0 {
-            blockInsert()
-        }
-        self.notifyStatus(status)
+        
     }
     
     func notifyProgress(at position: Int, of total: Int) {
