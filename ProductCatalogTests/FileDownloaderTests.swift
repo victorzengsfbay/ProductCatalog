@@ -9,8 +9,9 @@ import XCTest
 @testable import ProductCatalog
 
 class FileDownloaderTests: XCTestCase, CSVDownloadWatcher {
-    var downloadExp: XCTestExpectation!
-
+    var downloadExp: XCTestExpectation?
+    var temporaryFileURL: URL?
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -29,23 +30,33 @@ class FileDownloaderTests: XCTestCase, CSVDownloadWatcher {
 
     func testPerformanceDownloadtime() throws {
         // This is an example of a performance test case.
+        let temporaryDirectoryURL = FileManager.default.temporaryDirectory
+        temporaryFileURL =
+        temporaryDirectoryURL.appendingPathComponent(UUID().uuidString+".csv")
         if let source =  URL(string: Constants.CSVFile.productCatalogURLPath),
-           let targetURL = CSVDownloadManager.defaultLocalFileURL()
+           let targetURL = temporaryFileURL
         {
-            downloadExp = XCTestExpectation(description: "DownloadExp")
-            self.measure {
+            
+            downloadExp = XCTestExpectation(description: "downloadPerformance")
+             self.measure {
                 _ = CSVDownloadManager.shared.startDownload(source: source,
                                                         target: targetURL,
                                                         watcher: self)
-                wait(for: [downloadExp], timeout: 100)
+                 
+                 
             }
-            
+            if let exp = self.downloadExp {
+                wait(for: [exp], timeout: 100)
+            }
         }
     }
         
         func finishDownloading(_ status: Bool) {
             XCTAssert(status)
-            downloadExp.fulfill()
+            downloadExp?.fulfill()
+            if let targetURL = self.temporaryFileURL {
+                try? FileManager.default.removeItem(at: targetURL)
+            }
         }
         
         func downloadProgress(_ progress: Float, _ bytes: Int, _ total: Int) {
