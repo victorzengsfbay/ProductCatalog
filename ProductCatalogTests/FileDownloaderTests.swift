@@ -37,8 +37,9 @@ class FileDownloaderTests: XCTestCase, CSVDownloadWatcher {
                 _ = CSVDownloadManager.shared.startDownload(source: source,
                                                         target: targetURL,
                                                         watcher: self)
+                wait(for: [downloadExp], timeout: 100)
             }
-            wait(for: [downloadExp], timeout: 100)
+            
         }
     }
         
