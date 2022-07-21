@@ -79,7 +79,7 @@ extension HomeViewController {
                     }
                     else {
                         if r.total != 0 && r.itemsImported != 0 {
-                            let message = String(format: Constants.CSVFile.messageFormat, r.itemsImported, r.total)
+                            let message = String(format: Constants.ImportDatabase.messageFormat, r.itemsImported, r.total)
                             let d = Float( r.itemsImported)/Float(r.total)
                             self.progressView?.updateStatus(d, message)
                         }
