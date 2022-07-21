@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		FC4918A628877C6C00E2617A /* ViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4918A528877C6C00E2617A /* ViewModelTests.swift */; };
 		FC4918A92887811200E2617A /* FileDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4918A82887811200E2617A /* FileDownloaderTests.swift */; };
+		FC4918AD2888AF3600E2617A /* CSVURLDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4918AC2888AF3600E2617A /* CSVURLDownloader.swift */; };
+		FC4918AF2888DB2000E2617A /* ProductDatabaseBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4918AE2888DB2000E2617A /* ProductDatabaseBuilder.swift */; };
 		FC66BF49287D251700E3FE29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC66BF48287D251700E3FE29 /* AppDelegate.swift */; };
 		FC66BF4B287D251700E3FE29 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC66BF4A287D251700E3FE29 /* SceneDelegate.swift */; };
 		FC66BF4D287D251700E3FE29 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC66BF4C287D251700E3FE29 /* HomeViewController.swift */; };
@@ -56,6 +58,8 @@
 /* Begin PBXFileReference section */
 		FC4918A528877C6C00E2617A /* ViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTests.swift; sourceTree = "<group>"; };
 		FC4918A82887811200E2617A /* FileDownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloaderTests.swift; sourceTree = "<group>"; };
+		FC4918AC2888AF3600E2617A /* CSVURLDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVURLDownloader.swift; sourceTree = "<group>"; };
+		FC4918AE2888DB2000E2617A /* ProductDatabaseBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDatabaseBuilder.swift; sourceTree = "<group>"; };
 		FC66BF45287D251700E3FE29 /* ProductCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProductCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC66BF48287D251700E3FE29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FC66BF4A287D251700E3FE29 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				FC66BF7E287D2AF700E3FE29 /* CSVFileReader.swift */,
+				FC4918AE2888DB2000E2617A /* ProductDatabaseBuilder.swift */,
 			);
 			path = CatalogToDb;
 			sourceTree = "<group>";
@@ -243,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				FC66BF87287DCF3200E3FE29 /* CSVDownloadManager.swift */,
+				FC4918AC2888AF3600E2617A /* CSVURLDownloader.swift */,
 			);
 			path = DownloadManager;
 			sourceTree = "<group>";
@@ -383,6 +389,7 @@
 			files = (
 				FCD2607B28821734004D709F /* DatabaseImporter.swift in Sources */,
 				FC66BF83287D3DB400E3FE29 /* SqliteService.swift in Sources */,
+				FC4918AD2888AF3600E2617A /* CSVURLDownloader.swift in Sources */,
 				FCBFC8B72881E35C00E055CE /* String+Quote.swift in Sources */,
 				FC66BF90287E24B300E3FE29 /* TableSectionHeader.swift in Sources */,
 				FCD260762881F2B8004D709F /* ProductTableViewController.swift in Sources */,
@@ -394,6 +401,7 @@
 				FC66BF49287D251700E3FE29 /* AppDelegate.swift in Sources */,
 				FCDBE6792884CD5A00652549 /* Queue.swift in Sources */,
 				FC66BF8E287E13E600E3FE29 /* ProductTableViewCell.swift in Sources */,
+				FC4918AF2888DB2000E2617A /* ProductDatabaseBuilder.swift in Sources */,
 				FC66BF4B287D251700E3FE29 /* SceneDelegate.swift in Sources */,
 				FC66BF88287DCF3200E3FE29 /* CSVDownloadManager.swift in Sources */,
 				FC66BF81287D350400E3FE29 /* Constants.swift in Sources */,
