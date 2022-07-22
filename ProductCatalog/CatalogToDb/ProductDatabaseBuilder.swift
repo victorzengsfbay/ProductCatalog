@@ -27,7 +27,7 @@ class ProductDatabaseBuilder: NSObject, SqliteWriteObserver {
         
         if  sqlService.startImport() {
             sqlService.delegate = self
-            sqlService.pouplateAllData(csvFileReader)
+            sqlService.populateAllData(csvFileReader)
             return true
         }
         return false

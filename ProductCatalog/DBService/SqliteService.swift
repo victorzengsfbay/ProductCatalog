@@ -23,7 +23,7 @@ protocol SqliteReaderProvider {
 
 protocol SqliteWriteProvider {
     func startImport(_ csvReader: CSVReaderProtocol?) -> Bool
-    func pouplateAllData(_ csvReader: CSVReaderProtocol)
+    func populateAllData(_ csvReader: CSVReaderProtocol)
     func cancel()
 }
 
@@ -98,7 +98,7 @@ extension SqliteService {
         return status
     }
     
-    func pouplateAllData(_ csvReader: CSVReaderProtocol) {
+    func populateAllData(_ csvReader: CSVReaderProtocol) {
         self.queue.async {
             typealias Products = [Product]
             let dataQueue = DataQueue<Products>()

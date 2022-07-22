@@ -67,25 +67,28 @@ extension HomeViewController {
 extension HomeViewController {
     func startDataImport(_ csvFile: URL) {
         self.progressView = ActivityProgressView.createProgressView(in: self.view)
-        dataBuilder = ProductDatabaseBuilder()
-        if dataBuilder?.configureAndStartImport(source: csvFile) == true {
-            importCancellable = dataBuilder?.$state.sink(receiveValue: { r in
-                DispatchQueue.main.async {
-                    if r.done == true  {
-                        self.progressView?.removeFromSuperview()
-                        self.addProductCatalogViewController()
-                        self.importCancellable?.cancel()
-                        self.importCancellable = nil
-                    }
-                    else {
-                        if r.total != 0 && r.itemsImported != 0 {
-                            let message = String(format: Constants.ImportDatabase.messageFormat, r.itemsImported, r.total)
-                            let d = Float( r.itemsImported)/Float(r.total)
-                            self.progressView?.updateStatus(d, message)
+        DispatchQueue.global().async {
+            let dataBuilder = ProductDatabaseBuilder()
+            if dataBuilder.configureAndStartImport(source: csvFile) == true {
+                self.dataBuilder = dataBuilder
+                self.importCancellable = dataBuilder.$state.sink(receiveValue: { r in
+                    DispatchQueue.main.async {
+                        if r.done == true  {
+                            self.progressView?.removeFromSuperview()
+                            self.addProductCatalogViewController()
+                            self.importCancellable?.cancel()
+                            self.importCancellable = nil
+                        }
+                        else {
+                            if r.total != 0 && r.itemsImported != 0 {
+                                let message = String(format: Constants.ImportDatabase.messageFormat, r.itemsImported, r.total)
+                                let d = Float( r.itemsImported)/Float(r.total)
+                                self.progressView?.updateStatus(d, message)
+                            }
                         }
                     }
-                }
-            })
+                })
+            }
         }
     }
 }
