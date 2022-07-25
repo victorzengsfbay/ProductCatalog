@@ -40,7 +40,7 @@ class DatabaseImporter: SqliteWriteObserver {
             self.databuilderObserver?.databaseWillStartImport()
             self.status = .importStarted
             
-            sqlw.pouplateAllData(csvFileReader)
+            sqlw.populateAllData(csvFileReader)
             
             self.sqlService = sqlw
             self.status = .importStarted

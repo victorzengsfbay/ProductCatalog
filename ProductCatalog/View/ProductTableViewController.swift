@@ -38,7 +38,7 @@ class ProductTableViewController: UITableViewController,
             self.onRowsAdded(rows)
         }
         self.listVM = vm
-        self.listVM?.load("")
+        self.listVM?.load("", true)
     }
 }
 
@@ -97,7 +97,7 @@ extension ProductTableViewController {
         if (scrollView.contentSize.height - scrollView.contentOffset.y) < scrollView.bounds.height {
             if self.finishLoad {
                 self.finishLoad = false
-                self.listVM?.loadMore()
+                self.listVM?.load(nil, false)
             }
         }
     }
@@ -128,10 +128,10 @@ extension ProductTableViewController {
     func updateSearchResults(for searchController: UISearchController) {}
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.listVM?.load(searchText)
+        self.listVM?.load(searchText, true)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.listVM?.load("")
+        self.listVM?.load("", true)
     }
 }
