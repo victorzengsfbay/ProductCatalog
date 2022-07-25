@@ -90,8 +90,23 @@ class CatalogListVM: CatalogListVMProvider {
 }
 
 /*
- * - lock and start db operation
- */
-class SearchOperation: Operation {
-    
-}
+ request added:"1", from:0, size: 20
+ perform search:"1", from:0, size: 20
+ request added:"12", from:0, size: 20
+ perform search:"12", from:0, size: 20          <-
+ UI display:"12", from:0, size: 20             <===
+ request added:"129", from:0, size: 20
+ perform search:"129", from:0, size: 20         <-
+ request added:"1292", from:0, size: 20
+ request added:"12921", from:0, size: 20
+ request added:"129210", from:0, size: 20
+ perform search:"129210", from:0, size: 20      <-
+ request added:"1292109", from:0, size: 20
+ perform search:"1292109", from:0, size: 20     <-
+ request added:"12921092", from:0, size: 20
+ request added:"129210921", from:0, size: 20
+ request added:"1292109210", from:0, size: 20
+ perform search:"1292109210", from:0, size: 20  <-
+ UI display:"1292109210", from:0, size: 20     <====
+ //10 search request, 5 perform, 2 display
+*/
